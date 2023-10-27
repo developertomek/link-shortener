@@ -34,6 +34,7 @@
     "@mantine/hooks": "^6.0.21",
     "@mantine/next": "^6.0.21",
     "@prisma/client": "4.6.1",
+    "@tabler/icons-react": "^2.40.0",
     "blitz": "2.0.0-beta.34",
     "next": "^14.0.0",
     "prisma": "4.6.1",
