@@ -46,7 +46,7 @@
     "@testing-library/react-hooks": "8.0.1",
     "@types/node": "18.11.9",
     "@types/preview-email": "2.0.1",
-    "@types/react": "18.0.25",
+    "@types/react": "^17.0.38",
     "@typescript-eslint/eslint-plugin": "5.42.1",
     "@vitejs/plugin-react": "2.2.0",
     "eslint": "8.27.0",
