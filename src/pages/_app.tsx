@@ -1,8 +1,9 @@
 import { ErrorFallbackProps, ErrorComponent, ErrorBoundary, AppProps } from "@blitzjs/next"
+import { MantineProvider } from "@mantine/core"
 import { AuthenticationError, AuthorizationError } from "blitz"
-import React from "react"
+import React, { Suspense } from "react"
 import { withBlitz } from "src/blitz-client"
-import 'src/styles/globals.css'
+import "src/styles/globals.css"
 
 function RootErrorFallback({ error }: ErrorFallbackProps) {
   if (error instanceof AuthenticationError) {
@@ -25,10 +26,19 @@ function RootErrorFallback({ error }: ErrorFallbackProps) {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const getLayout = Component.getLayout || ((page) => page)
   return (
     <ErrorBoundary FallbackComponent={RootErrorFallback}>
-      {getLayout(<Component {...pageProps} />)}
+      <MantineProvider
+        withGlobalStyles
+        withNormalizeCSS
+        theme={{
+          colorScheme: "dark",
+        }}
+      >
+        <Suspense fallback="Loading...">
+          <Component {...pageProps} />
+        </Suspense>
+      </MantineProvider>
     </ErrorBoundary>
   )
 }
