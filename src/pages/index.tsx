@@ -73,10 +73,10 @@ const UserInfo = () => {
             </List>
 
             <Group mt={30}>
-              <Button radius="xl" size="md">
+              <Button radius="md" size="md">
                 Get started
               </Button>
-              <Button variant="default" radius="xl" size="md">
+              <Button variant="default" radius="md" size="md">
                 Source code
               </Button>
             </Group>

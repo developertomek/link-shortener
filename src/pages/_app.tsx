@@ -1,3 +1,4 @@
+import { theme } from "@/styles/mantine-theme"
 import { ErrorFallbackProps, ErrorComponent, ErrorBoundary, AppProps } from "@blitzjs/next"
 import { MantineProvider } from "@mantine/core"
 import { AuthenticationError, AuthorizationError } from "blitz"
@@ -27,19 +28,20 @@ function RootErrorFallback({ error }: ErrorFallbackProps) {
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ErrorBoundary FallbackComponent={RootErrorFallback}>
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{
-          colorScheme: "dark",
-        }}
-      >
+    <MantineProvider
+      withGlobalStyles
+      withNormalizeCSS
+      theme={{
+        ...theme,
+        colorScheme: "dark",
+      }}
+    >
+      <ErrorBoundary FallbackComponent={RootErrorFallback}>
         <Suspense fallback="Loading...">
           <Component {...pageProps} />
         </Suspense>
-      </MantineProvider>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </MantineProvider>
   )
 }
 
