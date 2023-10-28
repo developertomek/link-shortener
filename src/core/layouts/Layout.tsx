@@ -1,7 +1,22 @@
 import Head from "next/head"
 import React, { FC } from "react"
-import { BlitzLayout } from "@blitzjs/next"
-import { AppShell, Center, Container, Footer, Group, Header, Text } from "@mantine/core"
+import { BlitzLayout, Routes } from "@blitzjs/next"
+import {
+  Anchor,
+  AppShell,
+  Button,
+  Center,
+  Container,
+  Footer,
+  Group,
+  Header,
+  Text,
+} from "@mantine/core"
+import { IconLink } from "@tabler/icons-react"
+import Link from "next/link"
+import { useCurrentUser } from "@/users/hooks/useCurrentUser"
+import { useMutation } from "@blitzjs/rpc"
+import logout from "@/auth/mutations/logout"
 
 const Layout: BlitzLayout<{ title?: string; children?: React.ReactNode }> = ({
   title,
@@ -9,6 +24,9 @@ const Layout: BlitzLayout<{ title?: string; children?: React.ReactNode }> = ({
 }) => {
   const appName = "Shortl"
   const thisYear = new Date().getFullYear()
+
+  const user = useCurrentUser()
+  const [$logout] = useMutation(logout)
 
   return (
     <>
@@ -22,8 +40,33 @@ const Layout: BlitzLayout<{ title?: string; children?: React.ReactNode }> = ({
         header={
           <Header height={60} px="xs" withBorder={false}>
             <Container>
-              <Group mx="auto" h={60} align="center">
-                <Text fw={700}>{appName}</Text>
+              <Group mx="auto" h={60} align="center" position="apart">
+                <Anchor
+                  underline={false}
+                  color="gray.3"
+                  component={Link}
+                  href={Routes.Home()}
+                  fw="bold"
+                >
+                  <Group>
+                    <IconLink color="violet" />
+                    {appName}
+                  </Group>
+                </Anchor>
+                {user && (
+                  <Button
+                    onClick={async () => {
+                      await $logout()
+                    }}
+                  >
+                    Logout
+                  </Button>
+                )}
+                {!user && (
+                  <Button component={Link} href={Routes.LoginPage()}>
+                    Login
+                  </Button>
+                )}
               </Group>
             </Container>
           </Header>
