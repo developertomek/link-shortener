@@ -1,30 +1,8 @@
 import Layout from "src/core/layouts/Layout"
 import { useCurrentUser } from "src/users/hooks/useCurrentUser"
 import { BlitzPage } from "@blitzjs/next"
-import { Button, Stack, Title, Text, TextInput } from "@mantine/core"
-import { IconArrowRight, IconLink } from "@tabler/icons-react"
-import { ReactFC } from "~/types"
-
-const LinkInput: ReactFC<{
-  onChange?: () => React.FormEvent<HTMLInputElement>
-  onClick?: () => void
-}> = ({ onChange, onClick }) => (
-  <TextInput
-    radius="md"
-    size="lg"
-    maw={600}
-    w="100%"
-    placeholder="Paste link to shorten"
-    rightSectionWidth={130}
-    icon={<IconLink />}
-    onChange={() => onChange}
-    rightSection={
-      <Button onClick={onClick} size="sm" rightIcon={<IconArrowRight stroke={1.5} width={12} />}>
-        <Text size="sm">Generate</Text>
-      </Button>
-    }
-  />
-)
+import { Stack, Title, Text } from "@mantine/core"
+import { LinkInput } from "@/core/components/LinkInput"
 
 const UserInfo = () => {
   const user = useCurrentUser()
@@ -32,6 +10,7 @@ const UserInfo = () => {
   const onClick = () => {
     if (user) {
       console.log("generate link")
+      //   cryptoRandomString({length: 10, type: 'url-safe'});
     } else {
       console.log("onClick")
     }
