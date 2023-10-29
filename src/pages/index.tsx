@@ -1,19 +1,34 @@
 import Layout from "src/core/layouts/Layout"
 import { useCurrentUser } from "src/users/hooks/useCurrentUser"
-import { BlitzPage } from "@blitzjs/next"
+import { BlitzPage, Routes } from "@blitzjs/next"
 import { Stack, Title, Text } from "@mantine/core"
 import { LinkInput } from "@/core/components/LinkInput"
+import crypto from "crypto"
+import { useState } from "react"
+import { useMutation } from "@blitzjs/rpc"
+import generateLink from "@/links/mutations/generateLink"
 
 const UserInfo = () => {
   const user = useCurrentUser()
+  const [url, setUrl] = useState<string>("")
+  const [redirectTo, setRedirectTo] = useState<string>("")
+  const [$generateLink, { isLoading, isSuccess }] = useMutation(generateLink, {})
 
-  const onClick = () => {
+  const handleOnClick = async () => {
     if (user) {
-      console.log("generate link")
-      //   cryptoRandomString({length: 10, type: 'url-safe'});
+      setUrl(crypto.randomBytes(10).toString("hex"))
+      await $generateLink({ url, redirectTo })
+
+      if (isSuccess) {
+        setUrl("")
+      }
     } else {
-      console.log("onClick")
+      Routes.LoginPage()
     }
+  }
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRedirectTo(e.target.value)
   }
 
   return (
@@ -25,12 +40,17 @@ const UserInfo = () => {
             Shorter links are easier to share and remember, and they can help you track your traffic
             and clicks.
           </Text>
-          <LinkInput onClick={onClick} />
+          <LinkInput isLoading={isLoading} onClick={handleOnClick} />
         </Stack>
       )}
       {user && (
         <Stack align="center" pt="xl">
-          <LinkInput onClick={onClick} />
+          <LinkInput
+            redirectTo={redirectTo}
+            isLoading={isLoading}
+            onClick={handleOnClick}
+            onChange={handleOnChange}
+          />
         </Stack>
       )}
     </>
