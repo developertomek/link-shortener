@@ -1,6 +1,7 @@
 import { theme } from "@/styles/mantine-theme"
 import { ErrorFallbackProps, ErrorComponent, ErrorBoundary, AppProps } from "@blitzjs/next"
 import { MantineProvider } from "@mantine/core"
+import { Notifications } from "@mantine/notifications"
 import { AuthenticationError, AuthorizationError } from "blitz"
 import React, { Suspense } from "react"
 import { withBlitz } from "src/blitz-client"
@@ -37,6 +38,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       }}
     >
       <ErrorBoundary FallbackComponent={RootErrorFallback}>
+        <Notifications position="top-right" />
         <Suspense fallback="Loading...">
           <Component {...pageProps} />
         </Suspense>
