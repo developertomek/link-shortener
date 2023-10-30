@@ -11,7 +11,7 @@ export default resolver.pipe(
   resolver.zod(Input),
   resolver.authorize(),
   async ({ url, redirectTo }, { session: { userId } }) => {
-    return await db.link.create({
+    const link = await db.link.create({
       data: {
         name: url,
         redirectTo,
@@ -22,5 +22,7 @@ export default resolver.pipe(
         },
       },
     })
+
+    return link
   }
 )
