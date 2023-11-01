@@ -6,7 +6,7 @@ const ButtonDefaultProps: Partial<ButtonProps> = {
 }
 
 export const theme: MantineThemeOverride = {
-  loader: "bars",
+  loader: "oval",
   cursorType: "pointer",
   primaryColor: "violet",
 
