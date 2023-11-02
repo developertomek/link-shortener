@@ -23,12 +23,14 @@ export const Links = () => {
           <Group position="apart" spacing="xl" w="100%" pt="md" key={link.id}>
             <Group spacing="xs">
               <Text fz="xs" color="dimmed">
-                shortl.com/
+                shortl/s/
               </Text>
               <Tooltip label="copy to clipboard">
                 <Anchor
                   onClick={async () => {
-                    await navigator.clipboard.writeText("localhost:3000/s/" + link.name)
+                    await navigator.clipboard.writeText(
+                      "https://shortl.up.railway.app/s/" + link.name
+                    )
                     notifications.show({
                       color: "green",
                       title: "Success",
