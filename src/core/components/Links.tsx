@@ -3,7 +3,8 @@ import getLinks from "@/links/queries/getLinks"
 import { confirmDelete } from "@/utils/mantine-utils"
 import { Routes } from "@blitzjs/next"
 import { useMutation, useQuery } from "@blitzjs/rpc"
-import { Group, Title, Text, ActionIcon, Anchor, Stack } from "@mantine/core"
+import { Group, Title, Text, ActionIcon, Anchor, Stack, Button, Tooltip } from "@mantine/core"
+import { notifications } from "@mantine/notifications"
 import { IconTrashX } from "@tabler/icons-react"
 import Link from "next/link"
 import React from "react"
@@ -24,36 +25,50 @@ export const Links = () => {
               <Text fz="xs" color="dimmed">
                 shortl.com/
               </Text>
-              <Anchor href={Routes.LinkPage({ link: link.name })} component={Link}>
-                {link.name}
-              </Anchor>
+              <Tooltip label="copy to clipboard">
+                <Anchor
+                  onClick={async () => {
+                    await navigator.clipboard.writeText("localhost:3000/s/" + link.name)
+                    notifications.show({
+                      color: "green",
+                      title: "Success",
+                      message: "Copied to clipboard",
+                    })
+                  }}
+                >
+                  {link.name}
+                </Anchor>
+              </Tooltip>
             </Group>
             <Group spacing="xs">
-              <Anchor color="inherit" href={link.redirectTo} component={Link} target="_blank">
-                {link.redirectTo.slice(0, 25)}...{" "}
-              </Anchor>
+              <Tooltip label={link.redirectTo}>
+                <Anchor color="inherit" href={link.redirectTo} component={Link} target="_blank">
+                  {link.redirectTo.slice(0, 25)}...{" "}
+                </Anchor>
+              </Tooltip>
               <Text fz="xs" c="dimmed">
                 ({link.createdAt.toDateString()})
               </Text>
             </Group>
-
-            <ActionIcon
-              onClick={() => {
-                confirmDelete(
-                  async () => {
-                    await $deleteLink({ id: link.id })
-                  },
-                  {
-                    confirmLabel: "Delete link",
-                  }
-                )
-              }}
-              color="violet"
-              variant="light"
-              size="lg"
-            >
-              <IconTrashX />
-            </ActionIcon>
+            <Tooltip label="delete">
+              <ActionIcon
+                onClick={() => {
+                  confirmDelete(
+                    async () => {
+                      await $deleteLink({ id: link.id })
+                    },
+                    {
+                      confirmLabel: "Delete link",
+                    }
+                  )
+                }}
+                color="violet"
+                variant="light"
+                size="lg"
+              >
+                <IconTrashX />
+              </ActionIcon>
+            </Tooltip>
           </Group>
         ))}
     </>
