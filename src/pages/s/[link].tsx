@@ -1,17 +1,29 @@
-import Layout from "@/core/layouts/Layout"
+import getLink from "@/links/queries/getLink"
 import { BlitzPage, useParam } from "@blitzjs/next"
-import { Group, Text } from "@mantine/core"
+import { useQuery } from "@blitzjs/rpc"
+import { Group, Loader, Text, Title } from "@mantine/core"
 import React from "react"
 
 const LinkPage: BlitzPage = () => {
   const link = useParam("link", "string")
-  console.log(link, "link")
+
+  const [redirectTo] = useQuery(getLink, { id: link as string })
+
+  if (!link) {
+    return <Text>Link not found 😞</Text>
+  }
+
+  if (redirectTo) {
+    window.location.replace(redirectTo)
+  }
+
   return (
-    <Layout>
-      <Group>
-        <Text> {link} </Text>
-      </Group>
-    </Layout>
+    <Group position="center" align="center" h="100vh">
+      <Text fz="xl">
+        {" "}
+        Redirecting <Loader />{" "}
+      </Text>
+    </Group>
   )
 }
 
